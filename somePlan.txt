@@ -1,0 +1,12 @@
+
+
+* Create API project
+* Create code-first database
+* Create React FE
+
+* Customize the app with something for ATE presentation
+
+* Create framework for Selenium UI testing
+	* Static
+	* DI
+* Create framework for API testing, WebAppFactory
