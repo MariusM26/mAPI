@@ -13,6 +13,7 @@ namespace UITests
             Browser.Start();
             Browser.GoTo("http://localhost:3000");
             Browser.GetDriver().FindElement(By.TagName("input")).SendKeys("Some name..");
+            Browser.Stop();
         }
     }
 }

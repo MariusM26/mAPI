@@ -1,6 +1,11 @@
 using mAPI.Database;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+
+// A temporal logger to display output on application boot
+Log.Logger = new LoggerConfiguration().CreateLogger();
+
 
 const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -11,7 +16,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:3000")
+                          policy.WithOrigins("http://localhost:3000", "https://localhost:5187")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
@@ -33,16 +38,14 @@ builder.Services.AddDbContext<MyDbContext>(options => options.UseSqlServer(build
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
-   .AddNegotiate();
+//builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
+//   .AddNegotiate();
 
 //builder.Services.AddAuthorization(options =>
 //{
 //    // By default, all incoming requests will be authorized according to the default policy.
 //    options.FallbackPolicy = options.DefaultPolicy;
 //});
-
-
 
 var app = builder.Build();
 
