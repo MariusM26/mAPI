@@ -10,7 +10,7 @@ using mAPI.Database;
 
 namespace mAPI.Migrations
 {
-    [DbContext(typeof(MyDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20240204183540_InitialCreate")]
     partial class InitialCreate
     {

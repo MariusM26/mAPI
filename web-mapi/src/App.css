@@ -1,38 +1,40 @@
-.App {
+/* General styling for the root element */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Styling for even rows */
+tr:nth-child(even) {
+  background: #F2F2F2;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Styling for odd rows */
+tr:nth-child(odd) {
+  background: #FFF;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Styling for table header and data cells */
+th, td {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Styling for container box */
+.containerbox {
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px gray;
+  background-color: white;
+  padding: 20px;
+  text-align: left;
+}
+
+/* Centering login container */
+.login-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  align-items: center;
+  min-height: 100vh;
 }

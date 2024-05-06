@@ -8,9 +8,9 @@ namespace mAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DCandidateController(MyDbContext context) : ControllerBase
+    public class DCandidateController(ApplicationDbContext context) : ControllerBase
     {
-        private readonly MyDbContext _context = context;
+        private readonly ApplicationDbContext _context = context;
 
         // GET: api/DCandidate
         [HttpGet]
