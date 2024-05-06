@@ -1,4 +1,6 @@
-﻿using mAPI.Database.Models;
+﻿using Azure.Core;
+using mAPI.Database.Models;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -28,6 +30,18 @@ public class Client
 
     public async Task<List<DCandidate>?> GetAsync()
     {
+        var loginEp = "/login";
+
+        using var loginResponse = await _client.PostAsJsonAsync(loginEp, new User()
+        {
+            Email = "test@test.test",
+            Password = "Pass123$"
+        });
+
+        var authorization = await loginResponse.Content.ReadFromJsonAsync<Authorization>(_jsonSerializerOptions);
+
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authorization!.TokenType, authorization.AccessToken);
+
         var endpoint = $"/api/DCandidate";
 
         using var response = await _client.GetAsync(endpoint);

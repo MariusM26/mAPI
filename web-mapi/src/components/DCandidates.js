@@ -150,7 +150,7 @@ const DCandidates = ({ classes, dCandidateList, fetchAllDCandidates, deleteDCand
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10]}
             component="div"
             count={dCandidateList.length}
             rowsPerPage={rowsPerPage}

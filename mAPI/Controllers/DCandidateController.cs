@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mAPI.Database;
 using mAPI.Database.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace mAPI.Controllers
 {
@@ -14,6 +15,7 @@ namespace mAPI.Controllers
 
         // GET: api/DCandidate
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<DCandidate>>> GetDCandidates()
         {
             return await _context.DCandidates.ToListAsync();
@@ -88,6 +90,10 @@ namespace mAPI.Controllers
 
             return NoContent();
         }
+
+
+
+
 
         private bool DCandidateExists(int id)
         {

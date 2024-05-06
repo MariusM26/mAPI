@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
+using System.Linq;
 using UiTests;
 using UiTests.Models;
 
@@ -12,7 +13,14 @@ namespace UITests
         {
             Browser.Start();
             Browser.GoTo("http://localhost:3000");
-            Browser.GetDriver().FindElement(By.TagName("input")).SendKeys("Some name..");
+
+            var inputs = Browser.GetDriver().FindElements(By.TagName("input")).ToList();
+
+            inputs.First().SendKeys("test@test.test");
+            inputs.Skip(1).First().SendKeys("Pass123$");
+
+            Browser.GetDriver().FindElement(By.TagName("button")).Click();
+
             Browser.Stop();
         }
     }

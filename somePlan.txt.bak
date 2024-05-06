@@ -16,7 +16,5 @@ DONE * Create framework for API testing, WebAppFactory
 Bugs:
 * when expanding to 25 rows, the form gets expanded (should not)
 * clear register form after success
-* Blood group text aligned left
-* Blood group default text so no error is displayed when not selecting
 
 
