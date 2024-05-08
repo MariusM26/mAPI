@@ -69,17 +69,12 @@ const DCandidateForm = ({ classes, ...props }) => {
         ? ""
         : "Email is not valid.";
     setErrors({ ...temp });
-    if (fieldValues === values) return Object.values(temp).every((x) => x === "");
+    if (fieldValues === values)
+      return Object.values(temp).every((x) => x === "");
   };
 
-  const {
-    values,
-    setValues,
-    errors,
-    setErrors,
-    handleInputChange,
-    resetForm,
-  } = useForm(initialFieldValues, validate, props.setCurrentId);
+  const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
+    useForm(initialFieldValues, validate, props.setCurrentId);
 
   useEffect(() => {
     if (props.currentId !== 0) {
@@ -104,7 +99,12 @@ const DCandidateForm = ({ classes, ...props }) => {
 
   return (
     <Paper className={classes.paper}>
-      <form autoComplete="off" noValidate className={classes.root} onSubmit={handleSubmit}>
+      <form
+        autoComplete="off"
+        noValidate
+        className={classes.root}
+        onSubmit={handleSubmit}
+      >
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
@@ -127,7 +127,12 @@ const DCandidateForm = ({ classes, ...props }) => {
               onChange={handleInputChange}
               {...(errors.mobile && { error: true, helperText: errors.mobile })}
             />
-            <FormControl variant="outlined" className={classes.formControl} {...(errors.bloodGroup && { error: true })}>
+            <FormControl
+              variant="outlined"
+              className={classes.formControl}
+              {...(errors.bloodGroup && { error: true })}
+              data-tst-component="Test"
+            >
               <InputLabel>Blood Group*</InputLabel>
               <Select
                 name="bloodGroup"
@@ -145,7 +150,9 @@ const DCandidateForm = ({ classes, ...props }) => {
                 <MenuItem value="0+">0 +ve</MenuItem>
                 <MenuItem value="0-">0 -ve</MenuItem>
               </Select>
-              {errors.bloodGroup && <FormHelperText>{errors.bloodGroup}</FormHelperText>}
+              {errors.bloodGroup && (
+                <FormHelperText>{errors.bloodGroup}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item xs={6}>
@@ -178,6 +185,7 @@ const DCandidateForm = ({ classes, ...props }) => {
               color="primary"
               type="submit"
               className={classes.smMargin}
+              data-tst-action="Submit"
             >
               Submit
             </Button>
@@ -204,4 +212,7 @@ const mapActionToProps = {
   updateDCandidate: actions.update,
 };
 
-export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(DCandidateForm));
+export default connect(
+  mapStateToProps,
+  mapActionToProps
+)(withStyles(styles)(DCandidateForm));
