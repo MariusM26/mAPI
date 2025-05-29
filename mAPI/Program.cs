@@ -5,25 +5,34 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Security.Claims;
 
-Log.Logger = new LoggerConfiguration().CreateLogger();
-
-
 const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration().CreateLogger();
 
+var builder = WebApplication.CreateBuilder(args);
 var currentLocation = Directory.GetCurrentDirectory();
 
 builder.Configuration
     .SetBasePath(currentLocation)
     .AddJsonFile(Path.Combine(currentLocation, "appsettings.json"), optional: false, reloadOnChange: true);
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+var dbPassword = Environment.GetEnvironmentVariable("SA_PASSWORD");
+
+if (new[] { dbHost, dbName, dbPassword }.Any(value => value == null))
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
+}
+else
+{
+    var connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User Id=SA;Password={dbPassword};TrustServerCertificate=True;MultipleActiveResultSets=True;";
+
+    builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+}
 
 builder.Services.AddAuthorization();
-
 builder.Services.AddIdentityApiEndpoints<ApplicationUser>().AddEntityFrameworkStores<ApplicationDbContext>();
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
@@ -36,11 +45,10 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers().AddApplicationPart(typeof(Program).Assembly);
-
-
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient<IStartupFilter, MigrationStartupService<ApplicationDbContext>>();
 
 var app = builder.Build();
 
@@ -69,22 +77,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.MapControllers();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseCors(MyAllowSpecificOrigins);
 app.MapIdentityApi<ApplicationUser>();
-
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.Run();
 
+await app.RunAsync();
 
 namespace mAPI
 {
     public partial class Program
     {
-
     }
 }

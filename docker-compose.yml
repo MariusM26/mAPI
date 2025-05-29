@@ -1,0 +1,59 @@
+name: mAPI_Project
+networks:
+  demoapp:
+
+services:
+  database:
+    image: mmarius26/mapi-repo:database
+    # image: mcr.microsoft.com/mssql/server:2017-latest
+    container_name: app-database
+    # volumes:
+    #   - ./mAPI/Scripts/migrate.sql:/migrate.sql
+    networks:
+      - "demoapp"
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - DB_HOST=database
+      - DB_NAME=DonationDB
+      - SA_PASSWORD=Pass1234
+
+  backend:
+     container_name: app-backend
+     image: mmarius26/mapi-repo:backend
+     # build:
+     #   context: .
+     #   dockerfile: mAPI/Dockerfile
+     ports:
+       - 5187:8080
+     depends_on:
+       - "database"
+     environment:
+       - DB_HOST=database
+       - DB_NAME=DonationDB
+       - SA_PASSWORD=Pass1234
+       - ASPNETCORE_ENVIRONMENT=Development
+       - ASPNETCORE_HTTP_PORTS=8080
+     networks:
+       - "demoapp"
+
+  frontend:
+     container_name: app-frontend
+     image: mmarius26/mapi-repo:frontend
+     # build: 
+     #    context: .
+     #    dockerfile: web-mapi/Dockerfile
+     ports:
+        - 3000:3000
+     depends_on:
+        - "database"
+        - "backend"
+     networks:
+        - "demoapp"
+
+
+# command: bash -c "
+#    sleep 60
+#    && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Pass1234 -d master -i migrate.sql"
+      # - ./mAPI/Scripts/migrate.sql:/migrate.sql    
