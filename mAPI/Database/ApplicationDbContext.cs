@@ -15,7 +15,7 @@ namespace mAPI.Database
         {
         }
 
-        public DbSet<DCandidate>? DCandidates { get; set; }
+        public virtual DbSet<DCandidate>? DCandidates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

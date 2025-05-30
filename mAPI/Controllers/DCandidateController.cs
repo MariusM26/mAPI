@@ -1,9 +1,9 @@
 ﻿#nullable disable
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using mAPI.Database;
 using mAPI.Database.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace mAPI.Controllers
 {
@@ -44,7 +44,9 @@ namespace mAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(dCandidate).State = EntityState.Modified;
+            var entry = _context.Entry(dCandidate);
+            if (entry != null)
+                entry.State = EntityState.Modified;
 
             try
             {
@@ -90,10 +92,6 @@ namespace mAPI.Controllers
 
             return NoContent();
         }
-
-
-
-
 
         private bool DCandidateExists(int id)
         {
