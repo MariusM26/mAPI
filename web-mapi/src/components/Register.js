@@ -64,7 +64,7 @@ function Register() {
       setError("Passwords do not match.");
     } else {
       setError("");
-      fetch("http://localhost:5187/register", {
+        fetch(`${process.env.REACT_APP_API_URL}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

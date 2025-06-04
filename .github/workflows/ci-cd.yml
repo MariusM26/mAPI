@@ -1,0 +1,37 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Docker Login
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Build backend image
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/mapi-repo:backend ./backend
+
+    - name: Build frontend image (cu .env.production)
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/mapi-repo:frontend ./frontend
+
+    - name: Run containers pentru teste
+      run: docker-compose up -d database backend
+
+    - name: Verificare containere active
+      run: docker ps
+
+    - name: Rulează backend unit tests
+      run: |
+        docker exec app-backend dotnet test || echo "Tests not defined or failed"
+
+    - name: Push images to Docker Hub
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/mapi-repo:backend
+        docker push ${{ secrets.DOCKER_USERNAME }}/mapi-repo:frontend

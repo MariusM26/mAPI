@@ -45,7 +45,7 @@ function AuthorizeView(props) {
       }
     }
 
-    fetchWithRetry("http://localhost:5187/pingauth", {
+      fetchWithRetry(`${process.env.REACT_APP_API_URL}/pingauth`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
