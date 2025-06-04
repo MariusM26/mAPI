@@ -10,7 +10,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["mAPI/mAPI.csproj", "mAPI/"]
+COPY [".mAPI/mAPI.csproj", "mAPI/"]
 RUN dotnet restore "./mAPI/mAPI.csproj"
 COPY . .
 WORKDIR "/src/mAPI"
