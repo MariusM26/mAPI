@@ -10,10 +10,10 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY [".mAPI/mAPI.csproj", "mAPI/"]
-RUN dotnet restore "./mAPI/mAPI.csproj"
+COPY ["mAPI.csproj", "."]
+RUN dotnet restore "./mAPI.csproj"
 COPY . .
-WORKDIR "/src/mAPI"
+WORKDIR "/src"
 RUN dotnet build "./mAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
