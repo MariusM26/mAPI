@@ -18,10 +18,10 @@ RUN mkdir -p /home/app
 WORKDIR /home/app
 
 # Copiem fișierul de env pentru build (prod)
-COPY ./web-mapi/.env.production .env
+COPY ./.env.production .env
 
 # Copiem aplicația
-COPY ./web-mapi /home/app
+COPY . /home/app
 
 # Navigăm în directorul corect
 WORKDIR /home/app/src
