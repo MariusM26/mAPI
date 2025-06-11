@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: database
-          image: mcr.microsoft.com/mssql/server:2019-latest
+          image: mmarius26/mapi-repo:database
           ports:
             - containerPort: 1433
           env:
